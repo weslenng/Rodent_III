@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Build files
+sources/rodentIII.dSYM
+sources/basic.ini
+sources/rodentIII

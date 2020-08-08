@@ -18,6 +18,10 @@ If not, see <http://www.gnu.org/licenses/>.
 #include <cstdio>
 #include <cstring>
 
+#ifdef __APPLE__
+    #include <mach-o/dyld.h>
+#endif
+
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
 #else
@@ -271,12 +275,15 @@ bool ChDir(const char *new_path) {
     if (relative) {
         char exe_path[1024];
 
+        // Getting the current executable location...
         #if defined (__APPLE__)
-            #error something should be done here, look for _NSGetExecutablePath(path, &size)
+            uint32_t exe_path_size = sizeof(exe_path);
+            _NSGetExecutablePath(exe_path, &exe_path_size);
+        #else
+            readlink("/proc/self/exe", exe_path, sizeof(exe_path));
         #endif
-        // getting the current executable location ...
-        readlink("/proc/self/exe", exe_path, sizeof(exe_path)); *(strrchr(exe_path, '/') + 1) = '\0';
 
+        *(strrchr(exe_path, '/') + 1) = '\0';
         printf_debug("go to '%s'\n", exe_path);
         chdir(exe_path); // go to the exe location, it's for relative paths
     }

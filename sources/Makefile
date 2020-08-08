@@ -24,7 +24,7 @@ CXXFLAGS = -g -std=c++14 -Wall -Wno-unknown-pragmas -O3 -fno-rtti -pthread $(CFG
 CXX1FLAGS = -g -std=c++14 -Wall -Wno-unknown-pragmas -pthread $(CFG1)
 
 # Define linker options
-LDFLAGS = -s -Wl,--no-as-needed,--gc-sections
+LDFLAGS = -Wl
 LD1FLAGS = -lm
 
 # Command line switches
