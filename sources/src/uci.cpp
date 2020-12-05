@@ -354,8 +354,10 @@ void ParseGo(POS *p, const char *ptr) {
 		tDepth[i] = 0;
 	}
 
+#ifndef __APPLE__
     for (auto& engine: Engines) // mDpCompleted cleared in StartThinkThread();
         engine.StartThinkThread(p);
+#endif
 
     std::thread timer([] {
         while (Glob.abortSearch == false) {
@@ -368,8 +370,13 @@ void ParseGo(POS *p, const char *ptr) {
         }
     });
 
-    for (auto& engine: Engines)
+    for (auto& engine: Engines) {
+#ifdef __APPLE__
+        engine.Think(p);
+#else
         engine.WaitThinkThread();
+#endif    
+    }
 
     timer.join();
 

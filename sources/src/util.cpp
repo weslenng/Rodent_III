@@ -276,12 +276,12 @@ bool ChDir(const char *new_path) {
         char exe_path[1024];
 
         // Getting the current executable location...
-        #if defined (__APPLE__)
-            uint32_t exe_path_size = sizeof(exe_path);
-            _NSGetExecutablePath(exe_path, &exe_path_size);
-        #else
-            readlink("/proc/self/exe", exe_path, sizeof(exe_path));
-        #endif
+#ifdef __APPLE__
+        uint32_t exe_path_size = sizeof(exe_path);
+        _NSGetExecutablePath(exe_path, &exe_path_size);
+#else
+        readlink("/proc/self/exe", exe_path, sizeof(exe_path));
+#endif
 
         *(strrchr(exe_path, '/') + 1) = '\0';
         printf_debug("go to '%s'\n", exe_path);
